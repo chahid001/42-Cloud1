@@ -7,7 +7,7 @@ dotenv.config()
 
 export class Cloud1VMs extends TerraformStack {
 
-    constructor(scope: Construct, id: string, vpcName: string, Subnets: string, PublicIpAddress: string) {
+    constructor(scope: Construct, id: string, vpcName: string, Subnets: string[], PublicIpAddress: string) {
         super(scope, id);
 
         // DataBase (private, no Public IP)
@@ -27,7 +27,7 @@ export class Cloud1VMs extends TerraformStack {
                 network: vpcName,
                 subnetwork: Subnets[1],
             }],
-            
+
             metadata: {
                 "ssh-keys": `cloud1:${process.env.PUBLIC_KEY}`,
             },
