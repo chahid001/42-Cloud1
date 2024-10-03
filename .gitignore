@@ -1,0 +1,6 @@
+Terraform/terraform.tfvars
+Terraform/terraform.tfstate
+Terraform/terraform.tfstate.backup
+Terraform/.terraform
+Terraform/.terraform.lock.hcl
+.vscode

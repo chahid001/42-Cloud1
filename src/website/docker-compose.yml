@@ -1,0 +1,52 @@
+version: '3.1'
+
+services:
+  nginx:
+    container_name: nginx
+    build: src/nginx
+    ports:
+      - 80:80
+      - 443:443
+    networks:
+      - net1
+    volumes:
+      - wp:/var/www/html
+    restart: on-failure
+  
+  phpmyadmin:
+    container_name: phpmyadmin
+    build: src/phpmyadmin
+    networks:
+      - net1
+    volumes:
+      - wp:/var/www/html
+    restart: on-failure
+
+  wordpress:
+    container_name: wordpress
+    build: src/wordpress
+    networks:
+      - net1
+    volumes:
+      - wp:/var/www/html
+    env_file:
+      - .env
+    restart: on-failure
+    depends_on:
+      - phpmyadmin
+      
+networks:
+  net1:
+    driver: bridge
+    
+volumes:
+  wp:
+    driver_opts :
+      type : 'none'
+      o : bind
+      device : /home/${USER}/data/wp
+  db:
+    driver_opts :
+      type : 'none'
+      o : bind
+      device : /home/${USER}/data/db
