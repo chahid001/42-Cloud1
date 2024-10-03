@@ -47,7 +47,7 @@ resource "google_compute_instance" "VM-app" {
 
     boot_disk {
       initialize_params {
-        image = "ubuntu-os-cloud/ubuntu-2204-lts"
+        image = "ubuntu-os-cloud/ubuntu-2204-lts"  
         size = 20
       }
     }
