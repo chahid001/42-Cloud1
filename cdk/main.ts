@@ -23,12 +23,22 @@ class MyStack extends TerraformStack {
       name: "cloud-1-vpc"
     });
 
+    //Subnets
     const subnet_app = new ComputeSubnetwork(this, "Subnet-app", {
       name: "app-cloud-subnet",
       network: vpc.name,
       ipCidrRange: "10.0.1.0/24",
       region: "us-central1"
     });
+
+    const subnet_db = new ComputeSubnetwork(this, "Subnet-DB", {
+      name: "DataBase-cloud-subnet",
+      network: vpc.name,
+      ipCidrRange: "10.0.2.0/24",
+      region: "us-central1"
+    });
+
+
 
     new ComputeFirewall(this, "Firewall_app", {
       name: "app-cloud-firewall",
