@@ -1,4 +1,5 @@
 import { ComputeSubnetwork } from "@cdktf/provider-google/lib/compute-subnetwork";
+import { GoogleProvider } from "@cdktf/provider-google/lib/provider";
 import { TerraformStack } from "cdktf";
 import { Construct } from "constructs";
 
@@ -6,8 +7,13 @@ export class Cloud1Subnets extends TerraformStack {
 
     public Subnets: string[];
 
-    constructor(scope: Construct, id: string, vpcName: string) {
+    constructor(scope: Construct, id: string, vpcName: string, provider: GoogleProvider) {
         super(scope, id);
+
+        new GoogleProvider(this, "Google-Provider", {
+            project: provider.project,
+            region: provider.region,
+        });
 
         const subnet_bastion = new ComputeSubnetwork(this, "JumpServer-Subnet", {
             name: "subnet-cloud-app",

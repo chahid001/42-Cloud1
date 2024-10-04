@@ -21,6 +21,7 @@
   },
   "dependencies": {
     "@cdktf/provider-google": "^14.4.0",
+    "@cdktf/provider-null": "^10.0.1",
     "cdktf": "^0.20.9",
     "constructs": "^10.3.0",
     "dotenv": "^16.4.5"

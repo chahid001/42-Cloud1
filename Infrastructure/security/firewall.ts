@@ -1,11 +1,17 @@
 import { ComputeFirewall } from "@cdktf/provider-google/lib/compute-firewall";
+import { GoogleProvider } from "@cdktf/provider-google/lib/provider";
 import { TerraformStack } from "cdktf";
 import { Construct } from "constructs";
 
 export class Cloud1Firewall extends TerraformStack {
 
-    constructor(scope: Construct, id: string, vpcName: string) {
+    constructor(scope: Construct, id: string, vpcName: string, provider: GoogleProvider) {
         super(scope, id);
+
+        new GoogleProvider(this, "Google-Provider", {
+            project: provider.project,
+            region: provider.region,
+        });
 
         new ComputeFirewall(this, "AllowSSH", {
             name: "jump-server-firewall",
@@ -21,7 +27,7 @@ export class Cloud1Firewall extends TerraformStack {
         });
 
         new ComputeFirewall(this, "InternalTraffic", {
-            name: "Allow-Internal-Traffic",
+            name: "allow-internal-traffic",
             network: vpcName,
 
             allow: [{
