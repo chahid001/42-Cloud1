@@ -3,7 +3,7 @@ version: '3.1'
 services:
   nginx:
     container_name: nginx
-    build: src/nginx
+    build: nginx
     ports:
       - 80:80
       - 443:443
@@ -15,7 +15,7 @@ services:
   
   phpmyadmin:
     container_name: phpmyadmin
-    build: src/phpmyadmin
+    build: phpmyadmin
     networks:
       - net1
     volumes:
@@ -24,7 +24,7 @@ services:
 
   wordpress:
     container_name: wordpress
-    build: src/wordpress
+    build: wordpress
     networks:
       - net1
     volumes:

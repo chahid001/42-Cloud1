@@ -1,31 +1,53 @@
 ---
-- name: Check if Docker is already installed
-  shell: "docker --version"
-  register: docker_installed
-  ignore_errors: true
-  changed_when: false
+- name: Install Docker on Ubuntu
+  hosts: all
+  become: yes
+  tasks:
 
-- name: Add GPG key
-  apt_key:
-    url: "{{ DOCKER_GPT_UBUNTU }}"
-    state: present 
-  when: docker_installed.rc != 0
+    - name: Check if Docker is already installed
+      shell: "docker --version"
+      register: docker_installed
+      ignore_errors: true
+      changed_when: false
 
-- name: Add repository
-  apt_repository:
-    repo: "deb {{ DOCKER_REPO_UBUNTU }} jammy stable"
-  when: docker_installed.rc != 0
+    - name: Add Docker GPG key
+      apt_key:
+        url: "{{ DOCKER_GPT_UBUNTU }}"
+        state: present 
+      when: docker_installed.rc != 0
 
-- name: Install Docker engine
-  apt: 
-    name: docker-ce
-    state: latest
-    update_cache: true
-  when: docker_installed.rc != 0
+    - name: Add Docker repository
+      apt_repository:
+        repo: "deb {{ DOCKER_REPO_UBUNTU }} jammy stable"
+      when: docker_installed.rc != 0
+
+    - name: Update apt cache
+      apt:
+        update_cache: yes
+      when: docker_installed.rc != 0
+
+    - name: Install Docker engine
+      apt: 
+        name: 
+          - docker-ce
+          - docker-ce-cli
+          - containerd.io
+        state: latest
+      when: docker_installed.rc != 0
   
-- name: Install Docker module for python
-  pip:
-    name:
-      - docker 
-      - docker-compose
-  when: docker_installed.rc != 0
+    - name: Install Docker module for Python (docker SDK)
+      pip:
+        name:
+          - docker
+      when: docker_installed.rc != 0
+
+    - name: Install Docker Compose (latest version)
+      get_url:
+        url: "https://github.com/docker/compose/releases/download/v2.12.2/docker-compose-{{ ansible_system | lower }}-{{ ansible_architecture }}"
+        dest: /usr/local/bin/docker-compose
+        mode: '0755'
+      when: docker_installed.rc != 0
+
+    - name: Verify Docker Compose installation
+      command: docker-compose --version
+      when: docker_installed.rc != 0

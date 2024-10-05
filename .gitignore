@@ -4,3 +4,4 @@ Terraform/terraform.tfstate.backup
 Terraform/.terraform
 Terraform/.terraform.lock.hcl
 .vscode
+src/website/.env

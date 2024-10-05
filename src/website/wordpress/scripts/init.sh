@@ -19,10 +19,5 @@ mv /var/www/wp-config.php /var/www/html
 wp core install --allow-root --url=${URL} --title=${WORDPRESS_NAME} --admin_user=${WORDPRESS_ROOT_LOGIN} --admin_password=${DB_ROOT_PASSWORD} --admin_email=${WORDPRESS_ROOT_EMAIL}
 wp user create ${DB_USER} ${WORDPRESS_USER_EMAIL} --user_pass=${DB_PASSWORD} --role=author --allow-root
 
-wp plugin install redis-cache --allow-root
-wp plugin update --all --allow-root
-wp plugin activate redis-cache --allow-root
-wp redis enable --allow-root
-
 echo "Wordpress started"
 php-fpm7.3 -F
