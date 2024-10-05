@@ -1,0 +1,3 @@
+---
+DOCKER_GPT_UBUNTU: "https://download.docker.com/linux/ubuntu/gpg"
+DOCKER_REPO_UBUNTU: "https://download.docker.com/linux/ubuntu"

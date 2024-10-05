@@ -1,0 +1,15 @@
+---
+
+- name: Copy docker resources to the server
+  copy:
+    src: ./../../../src/website
+    dest: /home/{{ ansible_user }}/website
+
+- name: Create data folder for wordpress
+  file:
+    path: /home/${USER}/data/wp
+    state: directory
+    recurse: y
+
+
+

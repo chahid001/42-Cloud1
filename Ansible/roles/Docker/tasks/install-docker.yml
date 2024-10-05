@@ -1,0 +1,31 @@
+---
+- name: Check if Docker is already installed
+  shell: "docker --version"
+  register: docker_installed
+  ignore_errors: true
+  changed_when: false
+
+- name: Add GPG key
+  apt_key:
+    url: "{{ DOCKER_GPT_UBUNTU }}"
+    state: present 
+  when: docker_installed.rc != 0
+
+- name: Add repository
+  apt_repository:
+    repo: "deb {{ DOCKER_REPO_UBUNTU }} jammy stable"
+  when: docker_installed.rc != 0
+
+- name: Install Docker engine
+  apt: 
+    name: docker-ce
+    state: latest
+    update_cache: true
+  when: docker_installed.rc != 0
+  
+- name: Install Docker module for python
+  pip:
+    name:
+      - docker 
+      - docker-compose
+  when: docker_installed.rc != 0

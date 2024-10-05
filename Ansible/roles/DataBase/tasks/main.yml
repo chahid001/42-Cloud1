@@ -1,0 +1,6 @@
+---
+- name: Copy Files
+  import_tasks: init-files.yml
+
+- name: Deploy with Docker Compose
+  import_tasks: deploy-database.yml

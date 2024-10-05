@@ -1,0 +1,21 @@
+---
+- hosts: 
+    - bastion
+    - mariadb
+  user: cloud1
+  become: true
+  roles: 
+    - Docker
+  
+- hosts: mariadb
+  user: cloud1
+  become: true
+  roles:
+    - DataBase
+    
+- hosts: bastion
+  user: cloud1
+  become: true
+  roles:
+    - Wordpress
+

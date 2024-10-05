@@ -1,0 +1,6 @@
+---
+- name: Docker compose up
+  docker_compose:
+    project_src: /home/{{ ansible_user }}/website
+    state: present
+    build: yes
