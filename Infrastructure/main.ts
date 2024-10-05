@@ -6,6 +6,7 @@ import { Cloud1Firewall } from "./security/firewall";
 import { PublicIP } from "./network/public_ip";
 import { Cloud1VMs } from "./compute/vm";
 import { GoogleProvider } from "@cdktf/provider-google/lib/provider";
+import { Cloud1RouterNat } from "./network/nat";
 
 dotenv.config()
 
@@ -24,6 +25,8 @@ const subnets = new Cloud1Subnets(app, "Cloud-1-Subnets", vpc.vpcName, googlePro
 new Cloud1Firewall(app, "Cloud-1-Firewall", vpc.vpcName, googleProvider);
 
 const IP_Add = new PublicIP(app, "Cloud-1-IP", googleProvider);
+
+new Cloud1RouterNat(app, "Cloud1-NAT", vpc.vpcName, subnets.Subnets, googleProvider);
 
 new Cloud1VMs(app, "Cloud-1-VMs", vpc.vpcName, subnets.Subnets, IP_Add.PublicIpAddress, googleProvider);
 
