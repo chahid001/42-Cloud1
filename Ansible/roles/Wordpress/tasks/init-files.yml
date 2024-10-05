@@ -3,7 +3,7 @@
 - name: Copy docker resources to the server
   copy:
     src: ./../../../src/website
-    dest: /home/{{ ansible_user }}/website
+    dest: /home/{{ ansible_user }}
 
 - name: Create data folder for wordpress
   file:

@@ -2,7 +2,7 @@
 - name: Copy docker resources to the server
   copy:
     src: ./../../../src/DataBase
-    dest: /home/{{ ansible_user }}/DataBase
+    dest: /home/{{ ansible_user }}
 
 - name: Create data folder for database
   file:
