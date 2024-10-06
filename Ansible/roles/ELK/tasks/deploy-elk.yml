@@ -1,0 +1,4 @@
+---
+- name: Docker compose up
+  command: docker compose -f /home/{{ ansible_user }}/ELK/docker-compose.yml up -d
+    

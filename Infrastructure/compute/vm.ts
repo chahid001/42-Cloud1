@@ -88,7 +88,7 @@ export class Cloud1VMs extends TerraformStack {
             bootDisk: {
                 initializeParams: {
                     image: "ubuntu-os-cloud/ubuntu-2204-lts",
-                    size: 10,
+                    size: 20,
                 },
             },
             networkInterface: [{
@@ -104,12 +104,12 @@ export class Cloud1VMs extends TerraformStack {
         // ELK instance
         new ComputeInstance(this, "ELK", {
             name: "elk-vm",
-            machineType: "e2-small",
+            machineType: "e2-standard-2",
             zone: "us-central1-b",
             bootDisk: {
                 initializeParams: {
                     image: "ubuntu-os-cloud/ubuntu-2204-lts",
-                    size: 10,
+                    size: 30,
                 },
             },
             networkInterface: [{

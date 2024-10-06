@@ -11,6 +11,7 @@ services:
       - net1
     volumes:
       - wp:/var/www/html
+      - ./logs/nginx:/var/log/nginx
     restart: on-failure
 
   wordpress:
@@ -20,10 +21,22 @@ services:
       - net1
     volumes:
       - wp:/var/www/html
+      - ./logs/wordpress:/var/www/html/wp-content/logs
     env_file:
       - .env
     restart: on-failure
-      
+
+  filebeat:
+    image: docker.elastic.co/beats/filebeat:7.10.0
+    container_name: filebeat
+    volumes:
+      - ./logs/nginx:/var/log/nginx 
+      - ./logs/wordpress:/var/www/html/wp-content/logs  
+      - ./filebeat/filebeat.yml:/usr/share/filebeat/filebeat.yml  
+    environment:
+      - "ELASTICSEARCH_HOSTS=10.0.3.2:9200"
+    command: ["--strict.perms=false"]
+
 networks:
   net1:
     driver: bridge

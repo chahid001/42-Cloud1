@@ -2,6 +2,7 @@
 - hosts: 
     - bastion
     - mariadb
+    - elk
   user: cloud1
   become: true
   any_errors_fatal: true 
@@ -20,3 +21,8 @@
   roles:
     - Wordpress
 
+- hosts: elk
+  user: cloud1
+  become: true
+  roles:
+    - ELK

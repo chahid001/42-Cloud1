@@ -1,0 +1,10 @@
+filebeat.inputs:
+- type: log
+  paths:
+    - /var/log/mysql/mariadb.log
+  fields:
+    service: nginx
+  fields_under_root: true
+
+output.logstash:
+  hosts: ["10.0.3.2:5044"]

@@ -1,0 +1,6 @@
+---
+- name: Copy docker resources to the server
+  copy:
+    src: ./../../../src/ELK
+    dest: /home/{{ ansible_user }}
+
