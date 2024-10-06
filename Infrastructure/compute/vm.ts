@@ -94,6 +94,8 @@ export class Cloud1VMs extends TerraformStack {
             networkInterface: [{
                 network: vpcName,
                 subnetwork: Subnets[1],
+                networkIp: "10.0.2.2",
+                accessConfig: [],
             }],
             metadata: {
                 "ssh-keys": `cloud1:${process.env.PUBLIC_KEY}`,
@@ -115,6 +117,8 @@ export class Cloud1VMs extends TerraformStack {
             networkInterface: [{
                 network: vpcName,
                 subnetwork: Subnets[2],
+                networkIp: "10.0.3.2",
+                accessConfig: [],
             }],
             metadata: {
                 "ssh-keys": `cloud1:${process.env.PUBLIC_KEY}`,
