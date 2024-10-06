@@ -24,5 +24,8 @@ wp plugin update --all --allow-root
 wp plugin activate redis-cache --allow-root
 wp redis enable --allow-root
 
+chown -R www-data:www-data /var/www/html/wp-content
+chmod -R 755 /var/www/html/wp-content
+
 echo "Wordpress started"
 php-fpm7.3 -F

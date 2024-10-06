@@ -1,17 +1,18 @@
 ---
-# - hosts: 
-#     - bastion
-#     - mariadb
-#   user: cloud1
-#   become: true
-#   roles: 
-#     - Docker
+- hosts: 
+    - bastion
+    - mariadb
+  user: cloud1
+  become: true
+  any_errors_fatal: true 
+  roles: 
+    - Docker
   
-# - hosts: mariadb
-#   user: cloud1
-#   become: true
-#   roles:
-#     - Data
+- hosts: mariadb
+  user: cloud1
+  become: true
+  roles:
+    - Data
 
 - hosts: bastion
   user: cloud1

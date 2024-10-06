@@ -1,0 +1,43 @@
+version: '3.7'
+
+services:
+  elasticsearch:
+    image: elasticsearch:8.15.2
+    environment:
+      - discovery.type=single-node
+      - ELASTIC_PASSWORD=
+    ports:
+      - "9200:9200"
+    volumes:
+      - es_data:/usr/share/elasticsearch/data
+    networks:
+      - elk_network
+
+  logstash:
+    image: logstash:8.15.2
+    environment:
+      - LOGSTASH_JAVA_OPTS=-Xmx256m -Xms256m
+    volumes:
+      - ./logstash/config:/usr/share/logstash/config
+      - ./logstash/pipeline:/usr/share/logstash/pipeline
+    ports:
+      - "5044:5044"
+    networks:
+      - elk_network
+
+  kibana:
+    image: kibana:8.15.2
+    environment:
+      - ELASTICSEARCH_HOSTS=http://elasticsearch:9200
+      - ELASTICSEARCH_USERNAME=elastic
+      - ELASTICSEARCH_PASSWORD=
+    ports:
+      - "5601:5601"
+    networks:
+      - elk_network
+
+volumes:
+  es_data:
+
+networks:
+  elk_network:
