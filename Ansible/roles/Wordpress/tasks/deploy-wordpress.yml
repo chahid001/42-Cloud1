@@ -1,6 +1,4 @@
 ---
 - name: Docker compose up
-  docker_compose:
-    project_src: /home/{{ ansible_user }}/website
-    state: present
-    build: yes
+  command: docker compose -f /home/{{ ansible_user }}/website/docker-compose.yml up
+    

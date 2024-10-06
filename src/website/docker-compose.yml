@@ -12,15 +12,6 @@ services:
     volumes:
       - wp:/var/www/html
     restart: on-failure
-  
-  phpmyadmin:
-    container_name: phpmyadmin
-    build: phpmyadmin
-    networks:
-      - net1
-    volumes:
-      - wp:/var/www/html
-    restart: on-failure
 
   wordpress:
     container_name: wordpress
@@ -32,8 +23,6 @@ services:
     env_file:
       - .env
     restart: on-failure
-    depends_on:
-      - phpmyadmin
       
 networks:
   net1:
@@ -44,9 +33,4 @@ volumes:
     driver_opts :
       type : 'none'
       o : bind
-      device : /home/${USER}/data/wp
-  db:
-    driver_opts :
-      type : 'none'
-      o : bind
-      device : /home/${USER}/data/db
+      device : /home/cloud1/data/wp

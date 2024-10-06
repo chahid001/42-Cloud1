@@ -7,9 +7,9 @@
 
 - name: Create data folder for wordpress
   file:
-    path: /home/${USER}/data/wp
+    path: /home/cloud1/data/wp
     state: directory
-    recurse: y
+    recurse: yes
 
 
 

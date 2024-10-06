@@ -11,7 +11,7 @@
 #   user: cloud1
 #   become: true
 #   roles:
-#     - DataBase
+#     - Data
 
 - hosts: bastion
   user: cloud1

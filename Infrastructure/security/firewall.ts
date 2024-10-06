@@ -13,18 +13,20 @@ export class Cloud1Firewall extends TerraformStack {
             region: provider.region,
         });
 
-        new ComputeFirewall(this, "AllowSSH", {
+        new ComputeFirewall(this, "ExternalTraffic", {
             name: "jump-server-firewall",
             network: vpcName,
 
             allow: [{
                 protocol: "tcp",
-                ports: ["22"],
+                ports: ["22", "443", "80"],
             }],
 
             sourceRanges: ["0.0.0.0/0"],
             targetTags: ["bastion"]
         });
+
+        
 
         new ComputeFirewall(this, "InternalTraffic", {
             name: "allow-internal-traffic",
@@ -32,7 +34,7 @@ export class Cloud1Firewall extends TerraformStack {
 
             allow: [{
                 protocol: "tcp",
-                ports: ["22", "3306", "9200", "5601"]
+                ports: ["22", "3306", "6379", "9200", "5601"]
             }],
 
             sourceTags: ["bastion"],

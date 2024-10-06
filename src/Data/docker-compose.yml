@@ -1,0 +1,42 @@
+version: '3.1'
+
+services:
+  mariadb:
+    container_name: database-mariadb
+    build: mariadb
+    ports:
+      - 3306:3306
+    volumes:
+      - db:/var/lib/mysql
+    restart: on-failure
+    networks:
+      - net2
+
+  phpmyadmin:
+    container_name: phpmyadmin
+    build: phpmyadmin
+    ports:
+      - 8080:80  
+    depends_on:
+      - mariadb
+    networks:
+      - net2
+
+  redis:
+    container_name: redis
+    build: redis
+    ports:
+      - 6379:6379
+    networks:
+      - net2
+
+networks:
+  net2:
+    driver: bridge
+
+volumes:
+  db:
+    driver_opts :
+      type : 'none'
+      o : bind
+      device : /home/cloud1/data/db

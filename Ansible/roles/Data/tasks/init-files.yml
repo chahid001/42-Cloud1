@@ -1,11 +1,11 @@
 ---
 - name: Copy docker resources to the server
   copy:
-    src: ./../../../src/DataBase
+    src: ./../../../src/Data
     dest: /home/{{ ansible_user }}
 
 - name: Create data folder for database
   file:
-    path: /home/${USER}/data/db
+    path: /home/cloud1/data/db
     state: directory
-    recurse: y
+    recurse: yes
