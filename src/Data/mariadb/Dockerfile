@@ -13,4 +13,30 @@ COPY ./config/db.sql /temp/db.sql
 
 RUN service mysql start && mysql < /temp/db.sql
 
+RUN curl -L -O https://artifacts.elastic.co/downloads/beats/filebeat/filebeat-7.9.1-amd64.deb && \
+    dpkg -i filebeat-7.9.1-amd64.deb
+
+RUN curl -L -O https://artifacts.elastic.co/downloads/beats/metricbeat/metricbeat-7.9.1-amd64.deb && \
+    dpkg -i metricbeat-7.9.1-amd64.deb
+
+RUN echo 'output.elasticsearch:\n\
+    hosts: ["10.0.3.2:9200"]\n\
+    username: "elastic"\n\
+    password: "password"\n\
+  setup.kibana:\n\
+    host: "10.0.3.2:5601"' >> /etc/filebeat/filebeat.yml
+
+RUN echo 'output.elasticsearch:\n\
+    hosts: ["10.0.3.2:9200"]\n\
+    username: "elastic"\n\
+    password: "password"\n\
+  setup.kibana:\n\
+    host: "10.0.3.2:5601"' >> /etc/metricbeat/metricbeat.yml
+
+RUN filebeat modules enable mysql
+RUN filebeat setup && service filebeat start
+
+RUN metricbeat modules enable mysql
+RUN metricbeat setup && service metricbeat start
+
 ENTRYPOINT [ "mysqld" ]

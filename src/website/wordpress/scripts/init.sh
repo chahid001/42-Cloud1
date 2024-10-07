@@ -27,5 +27,9 @@ wp redis enable --allow-root
 chown -R www-data:www-data /var/www/html/wp-content
 chmod -R 755 /var/www/html/wp-content
 
+metricbeat modules enable php_fpm
+metricbeat setup
+service metricbeat start
+
 echo "Wordpress started"
 php-fpm7.3 -F
