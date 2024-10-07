@@ -20,7 +20,7 @@ pipeline {
 
         ANSIBLE_INVENTORY_PATH = "Ansible/Inventories/hosts.ini"
         NGINX_CONF_PATH = "src/website/nginx/config/nginx.conf"
-        WORDPRESS_DOCKER = "src/docker-compose.yml"
+        WORDPRESS_DOCKER = "src/website/docker-compose.yml"
     }
 
     stages {
