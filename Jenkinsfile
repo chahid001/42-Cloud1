@@ -22,12 +22,6 @@ pipeline {
             }
         }
 
-        // stage('Auth with GCP') {
-        //     steps {
-
-        //     }
-        // }
-
         stage('Install Infrastructure Dependencies') {
             steps {
                 script {
@@ -44,10 +38,8 @@ pipeline {
                     dir('Infrastructure') {
                         sh 'gcloud auth activate-service-account --key-file=${GCP_KEY}'
                         sh 'gcloud config set project ${PROJECT_ID}'
-                        // sh 'sudo chown -R root:jenkins ${PRIVATE_KEY_PATH}'
                         sh 'sudo -E cdktf apply "*" --auto-approve'
-                        def publicIp = sh(script: 'sudo cdktf output public_ip', returnStdout: true).trim()
-
+                        def publicIp = sh(script: 'gcloud compute instances describe "jump-server-vm" --zone="us-central1-b" --format="get(networkInterfaces[0].accessConfigs[0].natIP)" --project ${PROJECT_ID}', returnStdout: true).trim()
                         env.PUBLIC_IP = publicIp
 
                         echo "Public IP: ${env.PUBLIC_IP}"
