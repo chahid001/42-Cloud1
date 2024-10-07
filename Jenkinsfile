@@ -66,7 +66,8 @@ pipeline {
                     sh 'echo "====== Setting UP ENVs ======"'
                     sh "sed -i 's@PUBLICIP@${env.PUBLIC_IP}@g' ${NGINX_CONF_PATH}"
                     sh "sed -i 's@PUBLICIP@${env.PUBLIC_IP}@g' ${ANSIBLE_INVENTORY_PATH}"
-
+                    sh "sed -i 's@PKP@${PRIVATE_KEY_PATH}@g' ${ANSIBLE_INVENTORY_PATH}"
+                    
                     sh "sed -i 's@EURL@${env.PUBLIC_IP}@g' ${WORDPRESS_DOCKER}"
                     sh "sed -i 's@WRL@${WORDPRESS_ROOT_LOGIN}@g' ${WORDPRESS_DOCKER}"
                     sh "sed -i 's@DRP@${DB_ROOT_PASSWORD}@g' ${WORDPRESS_DOCKER}"
