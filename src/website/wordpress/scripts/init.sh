@@ -16,7 +16,7 @@ cd /var/www/html
 wp core download --allow-root
 
 mv /var/www/wp-config.php /var/www/html
-wp core install --allow-root --url="PUBLICIP" --title="wordpress" --admin_user=${WORDPRESS_ROOT_LOGIN} --admin_password=${DB_ROOT_PASSWORD} --admin_email="root@mail.net"
+wp core install --allow-root --url=${URL} --title="wordpress" --admin_user=${WORDPRESS_ROOT_LOGIN} --admin_password=${DB_ROOT_PASSWORD} --admin_email="root@mail.net"
 wp user create ${DB_USER} "schahid@mail.net" --user_pass=${DB_PASSWORD} --role=author --allow-root
 
 wp plugin install redis-cache --allow-root

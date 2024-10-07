@@ -20,8 +20,12 @@ services:
       - net1
     volumes:
       - wp:/var/www/html
-    env_file:
-      - .env
+    environment:
+      - URL="EURL"
+      - WORDPRESS_ROOT_LOGIN="WRL"
+      - DB_ROOT_PASSWORD="DRP"
+      - DB_USER="EDU"
+      - DB_PASSWORD="EDP"
     restart: on-failure
 
 networks:
