@@ -5,7 +5,7 @@ pipeline {
     environment {
         GCP_KEY = credentials('GCP_KEY')
         PROJECT_ID = credentials('PROJECT_ID')
-
+        GOOGLE_CREDENTIALS = credentials('GOOGLE_CREDENTIALS')
         PROJECT_NB = vault(path: 'secret/infrastructure', key: 'PROJECT_NB')
         PUBLIC_KEY = vault(path: 'secret/infrastructure', key: 'PUBLIC_KEY') 
         PRIVATE_KEY_PATH = vault(path: 'secret/infrastructure', key: 'PRIVATE_KEY_PATH')
