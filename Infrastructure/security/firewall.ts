@@ -34,7 +34,7 @@ export class Cloud1Firewall extends TerraformStack {
 
             allow: [{
                 protocol: "tcp",
-                ports: ["22", "3306", "6379", "9200", "5044", "5601"]
+                ports: ["22", "3306", "6379", "9200", "5601"]
             }],
 
             sourceTags: ["bastion"],
