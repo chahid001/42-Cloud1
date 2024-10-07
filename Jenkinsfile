@@ -22,12 +22,11 @@ pipeline {
             }
         }
 
-        stage('Auth with GCP') {
-            steps {
-                sh 'gcloud auth activate-service-account --key-file=${GCP_KEY}'
-                sh 'gcloud config set project ${PROJECT_ID}'
-            }
-        }
+        // stage('Auth with GCP') {
+        //     steps {
+
+        //     }
+        // }
 
         stage('Install Infrastructure Dependencies') {
             steps {
@@ -43,6 +42,8 @@ pipeline {
             steps {
                 script {
                     dir('Infrastructure') {
+                        sh 'gcloud auth activate-service-account --key-file=${GCP_KEY}'
+                        sh 'gcloud config set project ${PROJECT_ID}'
                         sh 'ls -la'
                         sh 'cdktf apply "*" --auto-approve'
                         def publicIp = sh(script: 'terraform output -raw public_ip', returnStdout: true).trim()
