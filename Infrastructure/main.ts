@@ -1,4 +1,4 @@
-import { App } from "cdktf";
+import { App, TerraformOutput } from "cdktf";
 import * as dotenv from "dotenv";
 import { Cloud1Vpc } from "./network/vpc";
 import { Cloud1Subnets } from "./network/subnets";
@@ -30,5 +30,9 @@ new Cloud1RouterNat(app, "Cloud1-NAT", vpc.vpcName, subnets.Subnets, googleProvi
 
 new Cloud1VMs(app, "Cloud-1-VMs", vpc.vpcName, subnets.Subnets, IP_Add.PublicIpAddress, googleProvider);
 
+new TerraformOutput(app, 'public_ip', {
+  value: IP_Add.PublicIpAddress,  
+  description: 'Public IP Address of the VM',
+});
 
 app.synth();
