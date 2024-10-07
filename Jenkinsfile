@@ -44,6 +44,7 @@ pipeline {
                     dir('Infrastructure') {
                         sh 'gcloud auth activate-service-account --key-file=${GCP_KEY}'
                         sh 'gcloud config set project ${PROJECT_ID}'
+                        sh 'gcloud services enable compute.googleapis.com'
                         sh 'ls -la'
                         sh 'cdktf apply "*" --auto-approve'
                         def publicIp = sh(script: 'terraform output -raw public_ip', returnStdout: true).trim()
