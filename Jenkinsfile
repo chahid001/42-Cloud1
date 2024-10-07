@@ -43,11 +43,12 @@ pipeline {
             steps {
                 script {
                     dir('Infrastructure') {
-                        sh 'cdktf deploy "*" --auto-approve'
-                        def publicIp = sh(script: 'terraform output -raw public_ip', returnStdout: true).trim()
-                        env.PUBLIC_IP = publicIp
+                        sh 'ls -la'
+                        // sh 'cdktf deploy "*" --auto-approve'
+                        // def publicIp = sh(script: 'terraform output -raw public_ip', returnStdout: true).trim()
+                        // env.PUBLIC_IP = publicIp
 
-                        echo "Public IP: ${env.PUBLIC_IP}"
+                        // echo "Public IP: ${env.PUBLIC_IP}"
                     }
                 }
             }
