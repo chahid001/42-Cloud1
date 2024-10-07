@@ -60,11 +60,6 @@ pipeline {
         stage('Update ENVs') {
             steps {
                 script {
-                    sh "ls -la"
-                    sh "cd Ansible"
-                    sh "ls -la"
-                    sh "cd Inventories"
-                    sh "ls -la"
                     sh "sed -i 's/PUBLICIP/${env.PUBLIC_IP}/g' ${ANSIBLE_INVENTORY_PATH}"
                     sh "sed -i 's/PUBLICIP/${env.PUBLIC_IP}/g' ${NGINX_CONF_PATH}"
 
