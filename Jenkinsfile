@@ -3,7 +3,7 @@ pipeline {
     agent any
 
     environment {
-        PROJECT_NB = vault(path: 'secret/infrastructure', key: 'PROJECT_NUMBER')
+        PROJECT_NB = vault(path: 'secret/infrastructure', key: 'PROJECT_NB')
         PUBLIC_KEY = vault(path: 'secret/infrastructure', key: 'PUBLIC_KEY') 
         PRIVATE_KEY_PATH = vault(path: 'secret/infrastructure', key: 'PRIVATE_KEY_PATH')
         PRIVATE_KEY = vault(path: 'secret/infrastructure', key: 'PRIVATE_KEY')
