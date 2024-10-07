@@ -27,6 +27,7 @@ pipeline {
 
         stage('Checkout') {
             steps {
+                sh 'echo "====== SCM ======"'
                 checkout scm
             }
         }
@@ -34,6 +35,7 @@ pipeline {
         stage('Install Infrastructure Dependencies') {
             steps {
                 script {
+                    sh 'echo "====== BUILD ======"'
                     dir('Infrastructure') {
                         sh 'npm i'
                     }
@@ -44,6 +46,7 @@ pipeline {
         stage('Deploy GCP Infrastructure') {
             steps {
                 script {
+                    sh 'echo "=== GCP Resources Deployment ==="'
                     dir('Infrastructure') {
                         sh 'gcloud auth activate-service-account --key-file=${GCP_KEY}'
                         sh 'gcloud config set project ${PROJECT_ID}'
@@ -60,14 +63,15 @@ pipeline {
         stage('Update ENVs') {
             steps {
                 script {
-                    sh "sed -i 's/PUBLICIP/${env.PUBLIC_IP}/g' ${ANSIBLE_INVENTORY_PATH}"
-                    sh "sed -i 's/PUBLICIP/${env.PUBLIC_IP}/g' ${NGINX_CONF_PATH}"
+                    sh 'echo "====== Setting UP ENVs ======"'
+                    sh "sed -i 's@PUBLICIP@${env.PUBLIC_IP}@g' ${NGINX_CONF_PATH}"
+                    sh "sed -i 's@PUBLICIP@${env.PUBLIC_IP}@g' ${ANSIBLE_INVENTORY_PATH}"
 
-                    sh "sed -i 's/EURL/${env.PUBLIC_IP}/g' ${WORDPRESS_DOCKER}"
-                    sh "sed -i 's/WRL/${WORDPRESS_ROOT_LOGIN}/g' ${WORDPRESS_DOCKER}"
-                    sh "sed -i 's/DRP/${DB_ROOT_PASSWORD}/g' ${WORDPRESS_DOCKER}"
-                    sh "sed -i 's/EDU/${DB_USER}/g' ${WORDPRESS_DOCKER}"
-                    sh "sed -i 's/EDP/${DB_PASSWORD}/g' ${WORDPRESS_DOCKER}"
+                    sh "sed -i 's@EURL@${env.PUBLIC_IP}@g' ${WORDPRESS_DOCKER}"
+                    sh "sed -i 's@WRL@${WORDPRESS_ROOT_LOGIN}@g' ${WORDPRESS_DOCKER}"
+                    sh "sed -i 's@DRP@${DB_ROOT_PASSWORD}@g' ${WORDPRESS_DOCKER}"
+                    sh "sed -i 's@EDU@${DB_USER}@g' ${WORDPRESS_DOCKER}"
+                    sh "sed -i 's@EDP@${DB_PASSWORD}@g' ${WORDPRESS_DOCKER}"
                 }
             }
         }
@@ -76,6 +80,7 @@ pipeline {
         stage('Deploy with Ansible') {
             steps {
                 script {
+                    sh 'echo "====== Deployment ======"'
                     dir ('Ansible') {
                         retry (3) {
                             sh "sudo ansible-playbook playbook.yml -i Inventories/hosts.ini --private-key ${PRIVATE_KEY_PATH}"                       
