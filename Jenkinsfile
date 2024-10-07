@@ -73,12 +73,16 @@ pipeline {
         }
 
 
-        stage('Test') {
+        stage('Deploy with Ansible') {
             steps {
                 script {
-                    sh "cat ${ANSIBLE_INVENTORY_PATH}"
-                    sh "cat ${NGINX_CONF_PATH}"
-                    sh "cat ${WORDPRESS_DOCKER}"
+                    dir ('Ansible') {
+                        sh """
+                            ansible-playbook -i Inventories/hosts.ini playbook.yml \
+                                --private-key=${PRIVATE_KEY_PATH} \
+                                --extra-vars "ansible_ssh_common_args='-o StrictHostKeyChecking=no'"
+                        """
+                    }
                 }
             }
         }
