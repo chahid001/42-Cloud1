@@ -1,7 +1,7 @@
 FROM debian:buster
 
 RUN apt -y update 
-RUN apt -y install nginx openssl apt-utils
+RUN apt -y install nginx openssl apt-utils curl
 
 COPY ./config/nginx.conf /etc/nginx/sites-available/default
 COPY ./scripts/ssl.sh /var/ssl.sh
@@ -12,18 +12,10 @@ RUN curl -L -O https://artifacts.elastic.co/downloads/beats/filebeat/filebeat-7.
 RUN curl -L -O https://artifacts.elastic.co/downloads/beats/metricbeat/metricbeat-7.9.1-amd64.deb && \
     dpkg -i metricbeat-7.9.1-amd64.deb
 
-RUN echo 'output.elasticsearch:\n\
-    hosts: ["10.0.3.2:9200"]\n\
-    username: "elastic"\n\
-    password: "password"\n\
-  setup.kibana:\n\
-    host: "10.0.3.2:5601"' >> /etc/filebeat/filebeat.yml
+COPY ./config/filebeat.yml /etc/filebeat/filebeat.yml
+COPY ./config/metricbeat.yml /etc/metricbeat/metricbeat.yml
 
-RUN echo 'output.elasticsearch:\n\
-    hosts: ["10.0.3.2:9200"]\n\
-    username: "elastic"\n\
-    password: "password"\n\
-  setup.kibana:\n\
-    host: "10.0.3.2:5601"' >> /etc/metricbeat/metricbeat.yml
+RUN filebeat modules enable nginx
+RUN metricbeat modules enable nginx
 
 ENTRYPOINT ["bash", "/var/ssl.sh"]

@@ -8,7 +8,13 @@
   any_errors_fatal: true 
   roles: 
     - Docker
-  
+
+- hosts: elk
+  user: cloud1
+  become: true
+  roles:
+    - ELK
+
 - hosts: mariadb
   user: cloud1
   become: true
@@ -21,8 +27,31 @@
   roles:
     - Wordpress
 
-- hosts: elk
+- hosts: mariadb
   user: cloud1
   become: true
-  roles:
-    - ELK
+  tasks:
+    - name: Setup Logging and Dashboard
+      shell: docker exec -it -u root database-mariadb filebeat setup
+    - name: Start filebeat service
+      shell: docker exec -it -u root database-mariadb service filebeat start
+
+    - name: Setup Monitoring and Dashboard
+      shell: docker exec -it -u root database-mariadb metricbeat setup
+    - name: Start metricbeat service
+      shell: docker exec -it -u root database-mariadb service metricbeat start
+
+- hosts: bastion
+  user: cloud1
+  become: true
+  tasks:
+    - name: Setup Logging and Dashboard for NGINX
+      shell: docker exec -it -u root nginx filebeat setup
+    - name: Start filebeat service
+      shell: docker exec -it -u root nginx service filebeat start
+
+    - name: Setup Monitoring and Dashboard for NGINX
+      shell: docker exec -it -u root nginx metricbeat setup
+    - name: Start metricbeat service
+      shell: docker exec -it -u root nginx service metricbeat start
+

@@ -28,8 +28,8 @@ export class Cloud1Firewall extends TerraformStack {
 
         
 
-        new ComputeFirewall(this, "InternalTraffic", {
-            name: "allow-internal-traffic",
+        new ComputeFirewall(this, "InternalTraffic-1", {
+            name: "allow-internal-traffic-1",
             network: vpcName,
 
             allow: [{
@@ -39,6 +39,19 @@ export class Cloud1Firewall extends TerraformStack {
 
             sourceTags: ["bastion"],
             targetTags: ["database", "elk"]
+        }); 
+
+        new ComputeFirewall(this, "InternalTraffic-2", {
+            name: "allow-internal-traffic-2",
+            network: vpcName,
+
+            allow: [{
+                protocol: "tcp",
+                ports: ["9200", "5601"]
+            }],
+
+            sourceTags: ["database"],
+            targetTags: ["elk"]
         }); 
 
     }

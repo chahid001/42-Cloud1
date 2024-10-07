@@ -1,6 +1,6 @@
 FROM debian:buster
 
-RUN apt -y update && apt -y install mariadb-server
+RUN apt -y update && apt -y install mariadb-server curl
 
 RUN sed -i 's/#port/port /g' /etc/mysql/mariadb.conf.d/50-server.cnf
 RUN sed -i 's/bind-address            = 127.0.0.1/bind-address            = 0.0.0.0/g' /etc/mysql/mariadb.conf.d/50-server.cnf
@@ -19,24 +19,10 @@ RUN curl -L -O https://artifacts.elastic.co/downloads/beats/filebeat/filebeat-7.
 RUN curl -L -O https://artifacts.elastic.co/downloads/beats/metricbeat/metricbeat-7.9.1-amd64.deb && \
     dpkg -i metricbeat-7.9.1-amd64.deb
 
-RUN echo 'output.elasticsearch:\n\
-    hosts: ["10.0.3.2:9200"]\n\
-    username: "elastic"\n\
-    password: "password"\n\
-  setup.kibana:\n\
-    host: "10.0.3.2:5601"' >> /etc/filebeat/filebeat.yml
-
-RUN echo 'output.elasticsearch:\n\
-    hosts: ["10.0.3.2:9200"]\n\
-    username: "elastic"\n\
-    password: "password"\n\
-  setup.kibana:\n\
-    host: "10.0.3.2:5601"' >> /etc/metricbeat/metricbeat.yml
+COPY ./config/filebeat.yml /etc/filebeat/filebeat.yml
+COPY ./config/metricbeat.yml /etc/metricbeat/metricbeat.yml
 
 RUN filebeat modules enable mysql
-RUN filebeat setup && service filebeat start
-
 RUN metricbeat modules enable mysql
-RUN metricbeat setup && service metricbeat start
 
 ENTRYPOINT [ "mysqld" ]
