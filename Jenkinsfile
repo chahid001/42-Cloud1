@@ -10,8 +10,14 @@ pipeline {
         
         ANSIBLE_INVENTORY_PATH = "Ansible/Inventories/hosts.ini"
     }
-    
+
     stages {
+
+        stage('Checkout') {
+            steps {
+                checkout scm
+            }
+        }
 
         stage('Install Infrastructure Dependencies') {
             steps {
