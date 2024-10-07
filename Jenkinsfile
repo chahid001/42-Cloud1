@@ -78,11 +78,7 @@ pipeline {
                 script {
                     dir ('Ansible') {
                         retry (3) {
-                            sh """
-                                sudo ansible-playbook -i Inventories/hosts.ini playbook.yml \
-                                    --private-key=${PRIVATE_KEY_PATH} \
-                                    --extra-vars "ansible_ssh_common_args='-o StrictHostKeyChecking=no'"
-                            """                        
+                            sh "sudo ansible-playbook playbook.yml -i Inventories/hosts.ini --private-key ${PRIVATE_KEY_PATH}"                       
                         }
 
                     }
