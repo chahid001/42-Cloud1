@@ -46,7 +46,7 @@ pipeline {
                         sh 'gcloud config set project ${PROJECT_ID}'
                         // sh 'sudo chown -R root:jenkins ${PRIVATE_KEY_PATH}'
                         sh 'sudo export GOOGLE_CREDENTIALS=${GOOGLE_CREDENTIALS}'
-                        sh 'sudo cdktf apply "*" --auto-approve'
+                        sh 'sudo -E cdktf apply "*" --auto-approve'
                         def publicIp = sh(script: 'terraform output -raw public_ip', returnStdout: true).trim()
                         env.PUBLIC_IP = publicIp
 
