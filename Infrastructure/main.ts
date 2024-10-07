@@ -13,6 +13,12 @@ dotenv.config()
 
 const app = new App();
 
+console.log("Hello/////");
+console.log("//////");
+console.log(process.env.PROJECT_NB);
+console.log("//////");
+console.log("Hello/////");
+
 const googleProvider = new GoogleProvider(app, "Google-Cloud-Provider", {
   project: process.env.PROJECT_NB, 
   region: "us-central1"
