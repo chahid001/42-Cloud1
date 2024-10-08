@@ -84,6 +84,26 @@ vault kv put secret/app WP_PSW="your-wordpress-password"
 vault kv put secret/infrastructure PUBLIC_KEY="$(cat ~/.ssh/id_rsa.pub)"
 ```
 **PS.:** The ENVs are mentioned in the Jenkinsfile, feel free to organize them as you want.
+
+### Configure Jenkins Credentials
+To enable your Jenkins agent to execute CDKTF commands and access the Vault environment variables, you need to add the following credentials to Jenkins:
+
+- **Root Token**: This is the token generated during the Vault initialization. It allows Jenkins to authenticate and retrieve secrets from Vault.
+
+- **GOOGLE_CREDENTIALS**: This JSON key file contains the necessary credentials for your GCP service account. It allows Jenkins to interact with GCP resources via the API.
+
+To add these credentials:
+
+1. Navigate to your Jenkins dashboard.
+2. Go to **Manage Jenkins** > **Manage Credentials**.
+3. Select the appropriate domain or add a new one.
+4. Click on **Add Credentials**:
+   - For **Root Token**: Choose **Secret text** and paste the Vault root token.
+   - For **GOOGLE_CREDENTIALS**: Choose **Secret file** and upload the JSON key file.
+
+Make sure that your Jenkins pipeline scripts reference these credentials properly to ensure seamless integration with Vault and GCP.
+
+
 ### Configure SSH config:
 To simplify SSH access to private VMs (VM2 and VM3) via the public jump host (VM1), configure your `~/.ssh/config` file:
 ```bash
