@@ -1,24 +1,68 @@
-# 🚀 GCP Cloud Infrastructure with Dockerized WordPress, MariaDB, ELK, Jenkins, and Vault
+# 🚀 Cloud-1 But Overkill 🚀
 
-## 🌐 Project Overview
+**Welcome to my expanded version of the Cloud-1 project!** This repository contains the code and configurations for a cloud infrastructure deployed on **Google Cloud Platform (GCP)** using **Terraform**, **AWS CDK**, **Ansible**, and **Docker**.
 
-This project is a complete GCP cloud infrastructure for deploying a WordPress app, database services, logging stack, and CI/CD pipeline. It features a **VPC** with **3 VMs**, **Docker Compose** for deploying services, and security enhancements such as a **bastion host**, **NAT**, and **Vault** for managing secrets.
+---
 
-### 🏗️ Architecture Overview
+## 📜 Project Overview
 
-- **VM1**: Public WordPress site with Nginx (Docker Compose).
-- **VM2**: Private MariaDB, phpMyAdmin, and Redis (Docker Compose).
-- **VM3**: Private ELK stack for logging with Metricbeat and Filebeat.
-- **Jenkins**: CI/CD pipeline for infrastructure and app deployment.
-- **Vault**: Secure storage for secrets (SSH keys, passwords, etc.).
+This project started as a simple 42 school assignment but evolved into a fully-fledged cloud infrastructure setup. Below is a summary of the components:
 
-### 🚀 Deployment Steps
+- 🏗️ **GCP VPC with 3 Subnets** – Segregating VMs for security and scalability.
+- 🌍 **WordPress and Nginx** – Hosted on VM1 with Docker Compose.
+- 🔐 **MariaDB, phpMyAdmin, Redis** – Running in a private subnet (VM2).
+- 📊 **ELK Stack** – Elasticsearch and Kibana deployed on VM3 for logging and monitoring.
+- 🛡️ **NAT & Router** – Providing internet access to private VMs for package installations without exposing them to the public internet.
+- 🎩 **Bastion Host (Jump Server)** – Secure SSH tunneling from VM1 to access private VMs.
+- 🔧 **Ansible** – For Docker installation and deployment automation.
+- 🔒 **Vault** – Storing secrets such as SSH keys and database credentials.
+- 🛠️ **Jenkins** – Automating infrastructure deployment using pipelines.
 
-1. Clone this repository.
-2. Set up your GCP environment.
-3. Configure Ansible for provisioning Docker and Docker Compose on the VMs.
-4. Deploy the Docker Compose services on each VM.
-5. Set up SSH tunneling for accessing phpMyAdmin and Kibana:
+---
+
+## 🖼️ Architecture Overview
+
+<table>
+  <tr>
+    <td><img src="[https://your-gif-link-here.gif](https://github.com/chahid001/42-Cloud01/blob/main/assets/archi.gif)" alt="Architecture GIF" width="400"/></td>
+    <td>
+
+The architecture consists of:
+1. **VM1 (Public Subnet):**
+   - Hosts WordPress and Nginx.
+   - Acts as a Bastion Host (Jump Server) for SSH tunneling.
+
+2. **VM2 (Private Subnet 2):**
+   - Hosts MariaDB, phpMyAdmin, and Redis.
+   - Uses Docker Compose for service orchestration.
+
+3. **VM3 (Private Subnet 3):**
+   - Hosts the ELK Stack (Elasticsearch, Kibana).
+   - Collects logs from Nginx and MariaDB containers via Metricbeat/Filebeat.
+
+4. **NAT & Router:**
+   - Provides internet access to private VMs without exposing them.
+
+</td>
+  </tr>
+</table>
+
+---
+
+## 🚀 Deployment
+
+Follow these steps to deploy the infrastructure:
+
+### Prerequisites
+
+- 🐍 **Python 3.x**
+- ☁️ **GCP Account** with project setup.
+- 🧰 **Terraform** installed.
+- 🔑 **SSH Key Pair** (to securely access the VMs).
+
+### Steps
+
+1. **Clone the Repository:**
    ```bash
-   ssh -N -L 5601:localhost:5601 elk-host
-   ssh -N -L 8080:localhost:8080 db-host
+   git clone https://github.com/your-repo/cloud-1-overkill.git
+   cd cloud-1-overkill
