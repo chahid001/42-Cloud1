@@ -24,7 +24,7 @@ This project started as a simple 42 school assignment but evolved into a fully-f
 
 <table>
   <tr>
-    <td><img src="[https://your-gif-link-here.gif](https://github.com/chahid001/42-Cloud01/blob/main/assets/archi.gif)" alt="Architecture GIF" width="400"/></td>
+    <td><img src="https://github.com/chahid001/42-Cloud01/blob/main/assets/archi.gif" alt="Architecture GIF" width="400"/></td>
     <td>
 
 The architecture consists of:
