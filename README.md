@@ -61,6 +61,77 @@ Follow these steps to deploy the infrastructure:
 - 🔑 **SSH Key Pair** (to securely access the VMs).
 
 ### Steps
+# Set up Vault for secrets:
+### First, initialize Vault:
+```bash
+vault operator init
+```
+### Unseal the Vault using the keys from the init process:
+```bash
+vault operator unseal <Unseal Key 1>
+vault operator unseal <Unseal Key 2>
+vault operator unseal <Unseal Key 3>
+```
+### Export the Vault address and token (replace with your values):
+```bash
+export VAULT_ADDR='http://127.0.0.1:8200'
+export VAULT_TOKEN='<Your Vault Token>'
+```
+### Store secrets for SSH keys, database credentials, and more:
+```bash
+vault kv put secret/db_password value="your-db-password"
+vault kv put secret/wordpress_db_password value="your-wordpress-db-password"
+vault kv put secret/ssh_private_key value="$(cat ~/.ssh/id_rsa)"
+```
+### Provision the Infrastructure with Terraform:
+```bash
+terraform init
+terraform apply
+```
+### Configure Ansible for Docker Setup:
+Use Ansible to deploy Docker and Docker Compose on all VMs:
+```bash
+ansible-playbook -i inventory/hosts setup-docker.yml
+```
+### Deploy Applications using Docker Compose:
+```bash
+ansible-playbook -i inventory/hosts deploy-apps.yml
+```
+### Set up SSH Tunneling:
+Access Kibana on VM3 or phpMyAdmin on VM2 through the jump host:
+```bash
+ssh -N -L 5601:localhost:5601 elk-host
+ssh -N -L 8080:localhost:8080 db-host
+```
+🔐 **Vault Environment Variables**:
+To properly configure Vault, the following environment variables need to be set:
+
+- `VAULT_ADDR`: Address of your Vault server.
+- `VAULT_TOKEN`: Access token for authenticating with Vault.
+- `SSH_PRIVATE_KEY_PATH`: Path to your SSH private key.
+- `DB_PASSWORD`: MariaDB root password.
+- `WORDPRESS_DB_PASSWORD`: WordPress database password.
+
+🛠️ **Technologies Used**:
+
+- ☁️ Google Cloud Platform (GCP)
+- 🌐 Terraform for infrastructure as code.
+- 🔒 Vault for secret management.
+- 🚀 Ansible for automation.
+- 🐋 Docker & Docker Compose for containerization.
+- 📦 MariaDB, Redis, phpMyAdmin for the database layer.
+- 📊 ELK Stack for monitoring and logging.
+- 🖥️ Jenkins for CI/CD pipelines.
+
+📚 **Learn More**:
+If you're interested in exploring more, check out my GitHub repository for the full codebase and detailed documentation.
+
+💡 **Future Improvements**:
+
+- 📈 Automate scaling for VM instances based on load.
+- 🔧 Add automated testing to Jenkins pipelines.
+- 🌐 Migrate services to Kubernetes for better orchestration.
+
 
 1. **Clone the Repository:**
    ```bash
