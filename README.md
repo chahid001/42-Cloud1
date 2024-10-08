@@ -55,7 +55,7 @@ Follow these steps to deploy the infrastructure:
 
 ### Prerequisites
 
-- 🐍 **Python 3.x**
+- 🛠 **NodeJS/NPM** with **CDKTF** and **Typescript** installed.
 - ☁️ **GCP Account** with project setup.
 - 🧰 **Terraform** installed.
 - 🔑 **SSH Key Pair** (to securely access the VMs).
@@ -79,42 +79,42 @@ export VAULT_TOKEN='<Your Vault Token>'
 ```
 ### Store secrets for SSH keys, database credentials, and more:
 ```bash
-vault kv put secret/db_password value="your-db-password"
-vault kv put secret/wordpress_db_password value="your-wordpress-db-password"
-vault kv put secret/ssh_private_key value="$(cat ~/.ssh/id_rsa)"
+vault kv put secret/app DB_PSW="your-db-password"
+vault kv put secret/app WP_PSW="your-wordpress-password"
+vault kv put secret/infrastructure PUBLIC_KEY="$(cat ~/.ssh/id_rsa.pub)"
 ```
-### Provision the Infrastructure with Terraform:
+**PS.:** The ENVs are mentioned in the Jenkinsfile, feel free to organize them as you want.
+### Configure SSH config:
+To simplify SSH access to private VMs (VM2 and VM3) via the public jump host (VM1), configure your `~/.ssh/config` file:
 ```bash
-terraform init
-terraform apply
+Host jump-host
+  HostName <Jump Host Public IP>
+  User cloud1
+  IdentityFile ~/.ssh/cloud1-ssh
+
+Host elk-host
+  HostName 10.0.3.2
+  User cloud1
+  IdentityFile ~/.ssh/cloud1-ssh
+  ProxyJump jump-host
+
+Host db-host
+  HostName 10.0.2.2
+  User cloud1
+  IdentityFile ~/.ssh/cloud1-ssh
+  ProxyJump jump-host
 ```
-### Configure Ansible for Docker Setup:
-Use Ansible to deploy Docker and Docker Compose on all VMs:
-```bash
-ansible-playbook -i inventory/hosts setup-docker.yml
-```
-### Deploy Applications using Docker Compose:
-```bash
-ansible-playbook -i inventory/hosts deploy-apps.yml
-```
+This configuration sets up `jump-host` (VM1) as a bastion server, allowing you to access the private VMs (`elk-host` and `db-host`) via the jump host.
 ### Set up SSH Tunneling:
 Access Kibana on VM3 or phpMyAdmin on VM2 through the jump host:
 ```bash
 ssh -N -L 5601:localhost:5601 elk-host
 ssh -N -L 8080:localhost:8080 db-host
 ```
-🔐 **Vault Environment Variables**:
-To properly configure Vault, the following environment variables need to be set:
-
-- `VAULT_ADDR`: Address of your Vault server.
-- `VAULT_TOKEN`: Access token for authenticating with Vault.
-- `SSH_PRIVATE_KEY_PATH`: Path to your SSH private key.
-- `DB_PASSWORD`: MariaDB root password.
-- `WORDPRESS_DB_PASSWORD`: WordPress database password.
 
 🛠️ **Technologies Used**:
 
-- ☁️ Google Cloud Platform (GCP)
+- ☁️ Google Cloud Platform (GCP), Amazon Cloud Development Kit (with TypeScript).
 - 🌐 Terraform for infrastructure as code.
 - 🔒 Vault for secret management.
 - 🚀 Ansible for automation.
@@ -132,8 +132,3 @@ If you're interested in exploring more, check out my GitHub repository for the f
 - 🔧 Add automated testing to Jenkins pipelines.
 - 🌐 Migrate services to Kubernetes for better orchestration.
 
-
-1. **Clone the Repository:**
-   ```bash
-   git clone https://github.com/your-repo/cloud-1-overkill.git
-   cd cloud-1-overkill
