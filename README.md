@@ -116,13 +116,13 @@ Host elk-host
   HostName 10.0.3.2
   User cloud1
   IdentityFile ~/.ssh/cloud1-ssh
-  ProxyJump jump-host
+  ProxyJump elk-host
 
 Host db-host
   HostName 10.0.2.2
   User cloud1
   IdentityFile ~/.ssh/cloud1-ssh
-  ProxyJump jump-host
+  ProxyJump db-host
 ```
 This configuration sets up `jump-host` (VM1) as a bastion server, allowing you to access the private VMs (`elk-host` and `db-host`) via the jump host.
 ### Set up SSH Tunneling:
